@@ -12,6 +12,7 @@ fn main() {
     let config: Config =
         serde_json::from_reader(BufReader::new(File::open(argument.config).unwrap())).unwrap();
 
+    // Validate config file before init
     if config.rotate.is_empty() {
         panic!("At least one ad is required to continue!")
     }
@@ -22,6 +23,7 @@ fn main() {
         if ad.message.len() > 140 {
             panic!("Message length in ad #{n} reached 140 bytes limit!")
         }
+        // @TODO validate username exists
     }
 
     let mut b: u64 = 0;
