@@ -32,8 +32,9 @@ cargo install twisterad
 Usage: twisterad [OPTIONS] --config <CONFIG>
 
 Options:
-  -c, --config <CONFIG>  Configuration file [default: config.json]
-  -r, --rotate <ROTATE>  Rotate messages time in seconds [default: 60]
-  -h, --help             Print help
-  -V, --version          Print version
+  -c, --config <CONFIG>    Configuration file [default: config.json]
+  -t, --timeout <TIMEOUT>  Rotation timeout in seconds [default: 60]
+  -m, --mine               Start node miner on connect
+  -h, --help               Print help
+  -V, --version            Print version
 ```

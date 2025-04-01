@@ -7,7 +7,11 @@ pub struct Argument {
     #[arg(short, long, default_value_t = String::from("config.json"))]
     pub config: String,
 
-    /// Rotate messages time in seconds
+    /// Rotation timeout in seconds
     #[arg(short, long, default_value_t = 60)]
-    pub rotate: u64,
+    pub timeout: u64,
+
+    /// Start node miner on connect
+    #[arg(short, long)]
+    pub mine: bool,
 }
