@@ -22,7 +22,8 @@ cargo install twisterad
 
 ### Repository
 
-* `git clone https://github.com/twisterarmy/twisterad.git && cd twisterad`
+* `git clone https://github.com/twisterarmy/twisterad.git`
+* `cd twisterad`
 * `cargo run -- -c path/to/config.json`
 
 ## Options
