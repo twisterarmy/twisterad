@@ -2,10 +2,10 @@ mod argument;
 mod config;
 
 use argument::Argument;
-use bitcoincore_rpc::{Auth, Client, RpcApi, jsonrpc::serde_json};
 use clap::Parser;
 use config::Config;
 use std::{fs::File, io::BufReader, thread::sleep, time::Duration};
+use twistercore_rpc::{Auth, Client, RpcApi, jsonrpc::serde_json};
 
 fn main() {
     let argument = Argument::parse();
