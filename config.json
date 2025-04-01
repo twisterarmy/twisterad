@@ -1,0 +1,20 @@
+{
+    "rpc":
+    {
+        "host":"127.0.0.1",
+        "port":28332,
+        "user":"user",
+        "password":"pwd"
+    },
+    "rotate":
+    [
+        {
+            "username":"nobody",
+            "message":"Promoted posts are needed to run the network infrastructure. If you want to help, start generating blocks and advertise. [en]"
+        },
+        {
+            "username":"nobody",
+            "message":"@twisterarmy is the #twister project supported by community\nhttps://twisterarmy.github.io/"
+        }
+    ]
+}

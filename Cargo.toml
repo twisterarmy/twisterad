@@ -1,0 +1,20 @@
+[package]
+name = "twisterad"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+readme = "README.md"
+description = "Rotate twister ads"
+keywords = ["twister", "twister-core", "p2p", "daemon", "rust-bitcoincore-rpc"]
+categories = ["network-programming", "command-line-utilities"]
+repository = "https://github.com/twisterarmy/twisterad"
+
+[dependencies]
+bitcoincore-rpc = "0.19.0"
+clap = { version = "4.5.34", features = ["derive"] }
+serde = { version = "1.0.219" }
+
+# development
+[patch.crates-io]
+bitcoincore-rpc = { git = "https://github.com/twisterarmy/rust-bitcoincore-rpc.git" }
+# bitcoincore-rpc = { path = "rust-bitcoincore-rpc/client" }
