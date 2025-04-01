@@ -1,10 +1,15 @@
 {
     "rpc":
     {
-        "host":"127.0.0.1",
-        "port":28332,
-        "user":"user",
-        "password":"pwd"
+        "server":{
+            "scheme":"http",
+            "host":"127.0.0.1",
+            "port":28332
+        },
+        "auth": {
+            "user":"user",
+            "password":"pwd"
+        }
     },
     "rotate":
     [

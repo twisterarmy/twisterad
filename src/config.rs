@@ -7,6 +7,19 @@ pub struct Ad {
 }
 
 #[derive(Deserialize)]
+pub struct Auth {
+    pub password: String,
+    pub user: String,
+}
+
+#[derive(Deserialize)]
+pub struct Server {
+    pub host: String,
+    pub port: u16,
+    pub scheme: String,
+}
+
+#[derive(Deserialize)]
 pub struct Config {
     pub rotate: Vec<Ad>,
     pub rpc: Rpc,
@@ -14,8 +27,6 @@ pub struct Config {
 
 #[derive(Deserialize)]
 pub struct Rpc {
-    pub host: String,
-    pub password: String,
-    pub port: u16,
-    pub user: String,
+    pub server: Server,
+    pub auth: Option<Auth>,
 }

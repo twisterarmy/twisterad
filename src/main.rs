@@ -32,13 +32,19 @@ fn main() {
 
     loop {
         match Client::new(
-            &format!("http://{}:{}", config.rpc.host, config.rpc.port),
-            Auth::UserPass(config.rpc.user.to_string(), config.rpc.password.to_string()),
+            &format!(
+                "{}://{}:{}",
+                config.rpc.server.scheme, config.rpc.server.host, config.rpc.server.port
+            ),
+            match config.rpc.auth {
+                Some(ref auth) => Auth::UserPass(auth.user.to_string(), auth.password.to_string()),
+                None => Auth::None,
+            },
         ) {
             Ok(rpc) => {
                 println!(
                     "Connection to {}:{} established!",
-                    config.rpc.host, config.rpc.port
+                    config.rpc.server.host, config.rpc.server.port
                 );
                 loop {
                     match rpc.get_block_count() {
