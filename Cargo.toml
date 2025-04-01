@@ -8,6 +8,7 @@ description = "Rotate twister ads"
 keywords = ["twister", "twister-core", "p2p", "daemon", "rust-twistercore-rpc"]
 categories = ["network-programming", "command-line-utilities"]
 repository = "https://github.com/twisterarmy/twisterad"
+homepage = "https://twisterarmy.github.io"
 
 [dependencies]
 twistercore-rpc = "0.1.0"
