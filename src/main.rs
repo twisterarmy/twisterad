@@ -15,6 +15,14 @@ fn main() {
     if config.rotate.is_empty() {
         panic!("At least one ad is required to continue!")
     }
+    for (n, ad) in config.rotate.iter().enumerate() {
+        if ad.message.is_empty() {
+            panic!("Message for ad #{n} should not be empty!")
+        }
+        if ad.message.as_bytes().len() > 140 {
+            panic!("Message length in ad #{n} reached 140 bytes limit!")
+        }
+    }
 
     let mut b: u64 = 0;
     let mut i: usize = 0;
