@@ -12,7 +12,6 @@ fn main() {
     let config: Config =
         serde_json::from_reader(BufReader::new(File::open(argument.config).unwrap())).unwrap();
 
-    // Validate config file before init
     if config.rotate.is_empty() {
         panic!("At least one ad is required to continue!")
     }
@@ -23,7 +22,6 @@ fn main() {
         if ad.message.len() > 140 {
             panic!("Message length in ad #{n} reached 140 bytes limit!")
         }
-        // @TODO validate username exists
     }
 
     let mut b: u64 = 0;
@@ -51,6 +49,15 @@ fn main() {
                         Ok(block_count) => {
                             if block_count > b {
                                 println!("Block #{block_count}");
+                                for ad in &config.rotate {
+                                    if !user_exists(&ad.username, rpc.list_wallet_users().unwrap())
+                                    {
+                                        panic!(
+                                            "Username @{} does not exist for this connection!",
+                                            ad.username
+                                        )
+                                    }
+                                }
                                 match rpc.set_spam_message(
                                     &config.rotate[i].username,
                                     &config.rotate[i].message,
@@ -82,14 +89,26 @@ fn main() {
                     }
                     println!(
                         "Await {} seconds for new block to rotate..",
-                        argument.rotate
+                        argument.timeout
                     );
-                    sleep(Duration::from_secs(argument.rotate))
+                    sleep(Duration::from_secs(argument.timeout))
                 }
             }
             Err(e) => println!("Could not connect to client: {e}"),
         }
-        println!("Await {} seconds to reconnect..", argument.rotate);
-        sleep(Duration::from_secs(argument.rotate))
+        println!("Await {} seconds to reconnect..", argument.timeout);
+        sleep(Duration::from_secs(argument.timeout))
     }
+}
+
+fn user_exists(name: &str, names: Vec<String>) -> bool {
+    if name == "nobody" {
+        return true;
+    }
+    for value in names {
+        if name == value {
+            return true;
+        }
+    }
+    false
 }
