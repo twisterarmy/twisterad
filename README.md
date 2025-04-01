@@ -1,5 +1,9 @@
 # twisterad
 
+![Build](https://github.com/twisterarmy/twisterad/actions/workflows/build.yml/badge.svg)
+[![Dependencies](https://deps.rs/repo/github/twisterarmy/twisterad/status.svg)](https://deps.rs/repo/github/twisterarmy/twisterad)
+[![crates.io](https://img.shields.io/crates/v/twisterad.svg)](https://crates.io/crates/twisterad)
+
 Lightweight, in-memory CLI / daemon tool to rotate multiple [twister](https://github.com/twisterarmy/twister-core) ads on a single mining node,
 through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust-bitcoincore-rpc) library.
 
