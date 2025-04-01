@@ -19,7 +19,7 @@ fn main() {
         if ad.message.is_empty() {
             panic!("Message for ad #{n} should not be empty!")
         }
-        if ad.message.as_bytes().len() > 140 {
+        if ad.message.len() > 140 {
             panic!("Message length in ad #{n} reached 140 bytes limit!")
         }
     }
