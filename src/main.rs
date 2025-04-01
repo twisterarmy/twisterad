@@ -25,50 +25,52 @@ fn main() {
             &format!("http://{}:{}", config.rpc.host, config.rpc.port),
             Auth::UserPass(config.rpc.user.to_string(), config.rpc.password.to_string()),
         ) {
-            Ok(rpc) => loop {
+            Ok(rpc) => {
                 println!(
                     "Connection to {}:{} established!",
                     config.rpc.host, config.rpc.port
                 );
-                match rpc.get_block_count() {
-                    Ok(block_count) => {
-                        if block_count > b {
-                            println!("Block #{block_count}");
-                            match rpc.set_spam_message(
-                                &config.rotate[i].username,
-                                &config.rotate[i].message,
-                                Some("replace"),
-                            ) {
-                                Ok(m) => println!(
-                                    "Ad changed to #{i} by @{} {:?}",
-                                    &config.rotate[i].username, m
-                                ),
-                                Err(e) => {
-                                    println!("Could not update ad: {e}");
-                                    break;
+                loop {
+                    match rpc.get_block_count() {
+                        Ok(block_count) => {
+                            if block_count > b {
+                                println!("Block #{block_count}");
+                                match rpc.set_spam_message(
+                                    &config.rotate[i].username,
+                                    &config.rotate[i].message,
+                                    Some("replace"),
+                                ) {
+                                    Ok(m) => println!(
+                                        "Ad changed to #{i} by @{} {:?}",
+                                        &config.rotate[i].username, m
+                                    ),
+                                    Err(e) => {
+                                        println!("Could not update ad: {e}");
+                                        break;
+                                    }
                                 }
-                            }
-                            if l > i + 1 {
-                                i += 1
+                                if l > i + 1 {
+                                    i += 1
+                                } else {
+                                    i = 0
+                                }
+                                b = block_count
                             } else {
-                                i = 0
+                                println!("Blockchain is up to date ({b}/{block_count})")
                             }
-                            b = block_count
-                        } else {
-                            println!("Blockchain is up to date ({b}/{block_count})")
+                        }
+                        Err(e) => {
+                            println!("Could not get block count: {e}");
+                            break;
                         }
                     }
-                    Err(e) => {
-                        println!("Could not get block count: {e}");
-                        break;
-                    }
+                    println!(
+                        "Await {} seconds for new block to rotate..",
+                        argument.rotate
+                    );
+                    sleep(Duration::from_secs(argument.rotate))
                 }
-                println!(
-                    "Await {} seconds for new block to rotate..",
-                    argument.rotate
-                );
-                sleep(Duration::from_secs(argument.rotate))
-            },
+            }
             Err(e) => println!("Could not connect to client: {e}"),
         }
         println!("Await {} seconds to reconnect..", argument.rotate);
