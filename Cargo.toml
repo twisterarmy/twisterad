@@ -11,11 +11,11 @@ repository = "https://github.com/twisterarmy/twisterad"
 homepage = "https://twisterarmy.github.io"
 
 [dependencies]
-twistercore-rpc = "0.1.0"
+twistercore-rpc = "0.2.0"
 clap = { version = "4.5.34", features = ["derive"] }
 serde = { version = "1.0.219" }
 
 # development
-# [patch.crates-io]
-# twistercore-rpc = { git = "https://github.com/twisterarmy/rust-twistercore-rpc.git" }
-# twistercore-rpc = { path = "rust-twistercore-rpc/client" }
+ [patch.crates-io]
+ twistercore-rpc = { git = "https://github.com/twisterarmy/rust-twistercore-rpc.git" }
+# twistercore-rpc = { path = "../rust-twistercore-rpc/client" }
