@@ -32,8 +32,8 @@ cargo install twisterad
 Usage: twisterad [OPTIONS] --config <CONFIG>
 
 Options:
-  -c, --config <CONFIG>  Configuration file, required
-  -r, --rotate <ROTATE>  Rotate messages time in seconds (`60` by default) [default: 60]
+  -c, --config <CONFIG>  Configuration file [default: config.json]
+  -r, --rotate <ROTATE>  Rotate messages time in seconds [default: 60]
   -h, --help             Print help
   -V, --version          Print version
 ```
