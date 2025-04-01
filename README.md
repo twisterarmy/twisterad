@@ -1,9 +1,9 @@
 # twisterad
 
-CLI / daemon tool to rotate multiple [twister](https://github.com/twisterarmy/twister-core) ads on a single mining node,
-through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust-bitcoincore-rpc).
+Lightweight, in-memory CLI / daemon tool to rotate multiple [twister](https://github.com/twisterarmy/twister-core) ads on a single mining node,
+through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust-bitcoincore-rpc) library.
 
-Optimal to run as a systemd unit that waits for a twister connection and then begins updating promotional messages with every new block found.
+Optimal to run as the systemd unit that waits for a twister connection and then begins updating promotional messages with every new block found.
 
 Check out `config.json` to setup remote / local connection or update default promotional messages for specified users!
 
