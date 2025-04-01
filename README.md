@@ -9,7 +9,7 @@ through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust
 
 Optimal to run as the systemd unit that waits for a twister connection and then begins updating promotional messages with every new block found.
 
-Check out `config.json` to setup remote / local connection or update default promotional messages for specified users!
+Check out `config.json` to setup remote / local connection or update default promotional messages for users!
 
 ## Install
 
