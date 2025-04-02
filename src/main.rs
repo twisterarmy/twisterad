@@ -45,59 +45,76 @@ fn main() {
                     config.rpc.server.host, config.rpc.server.port
                 );
                 loop {
-                    match rpc.get_block_count() {
-                        Ok(block_count) => {
-                            if block_count > b {
-                                println!("Block #{block_count}");
-                                for ad in &config.rotate {
-                                    if !user_exists(&ad.username, rpc.list_wallet_users().unwrap())
-                                    {
-                                        panic!(
-                                            "Username @{} does not exist for this connection!",
-                                            ad.username
-                                        )
+                    match rpc.set_generate(true, argument.processors) {
+                        Ok(()) => match rpc.get_block_count() {
+                            Ok(block_count) => {
+                                if block_count > b {
+                                    println!("Block #{block_count}");
+                                    for ad in &config.rotate {
+                                        if !user_exists(
+                                            &ad.username,
+                                            rpc.list_wallet_users().unwrap(),
+                                        ) {
+                                            panic!(
+                                                "Username @{} does not exist for this connection!",
+                                                ad.username
+                                            )
+                                        }
                                     }
-                                }
-                                match rpc.set_spam_message(
-                                    &config.rotate[i].username,
-                                    &config.rotate[i].message,
-                                    Some("replace"),
-                                ) {
-                                    Ok(m) => println!(
-                                        "Ad changed to #{i} by @{} {:?}",
-                                        &config.rotate[i].username, m
-                                    ),
-                                    Err(e) => {
-                                        println!("Could not update ad: {e}");
-                                        break;
+                                    match rpc.set_spam_message(
+                                        &config.rotate[i].username,
+                                        &config.rotate[i].message,
+                                        Some("replace"),
+                                    ) {
+                                        Ok(m) => println!(
+                                            "Ad changed to #{i} by @{} {:?}",
+                                            &config.rotate[i].username, m
+                                        ),
+                                        Err(e) => {
+                                            println!("Could not update ad: {e}");
+                                            break;
+                                        }
                                     }
-                                }
-                                if l > i + 1 {
-                                    i += 1
+                                    if l > i + 1 {
+                                        i += 1
+                                    } else {
+                                        i = 0;
+                                        println!("Ads queue processed!");
+                                        if argument.rotate {
+                                            println!("Begin new rotation..")
+                                        } else {
+                                            match rpc.set_generate(false, argument.processors) {
+                                                Ok(()) => {
+                                                    println!("Miner disabled, exit.");
+                                                    return;
+                                                }
+                                                Err(e) => panic!("Could not stop the miner: {e}"),
+                                            }
+                                        }
+                                    }
+                                    b = block_count
                                 } else {
-                                    i = 0
+                                    println!("Blockchain is up to date ({b}/{block_count})")
                                 }
-                                b = block_count
-                            } else {
-                                println!("Blockchain is up to date ({b}/{block_count})")
                             }
-                        }
+                            Err(e) => {
+                                println!("Could not get block count: {e}");
+                                break;
+                            }
+                        },
                         Err(e) => {
-                            println!("Could not get block count: {e}");
+                            println!("Could start the miner: {e}");
                             break;
                         }
                     }
-                    println!(
-                        "Await {} seconds for new block to rotate..",
-                        argument.timeout
-                    );
-                    sleep(Duration::from_secs(argument.timeout))
+                    println!("Await {} seconds for new block to rotate..", argument.delay);
+                    sleep(Duration::from_secs(argument.delay))
                 }
             }
             Err(e) => println!("Could not connect to client: {e}"),
         }
-        println!("Await {} seconds to reconnect..", argument.timeout);
-        sleep(Duration::from_secs(argument.timeout))
+        println!("Await {} seconds to reconnect..", argument.wake);
+        sleep(Duration::from_secs(argument.wake))
     }
 }
 

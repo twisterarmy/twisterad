@@ -32,9 +32,11 @@ cargo install twisterad
 Usage: twisterad [OPTIONS] --config <CONFIG>
 
 Options:
-  -c, --config <CONFIG>    Configuration file [default: config.json]
-  -t, --timeout <TIMEOUT>  Rotation timeout in seconds [default: 60]
-  -m, --mine               Start node miner on connect
-  -h, --help               Print help
-  -V, --version            Print version
+  -c, --config <CONFIG>          Configuration file [default: config.json]
+  -d, --delay <DELAY>            Rotation queue delay in seconds [default: 60]
+  -p, --processors <PROCESSORS>  Processors limit to mine
+  -r, --rotate                   Rotate ads or stop the miner on complete
+  -w, --wake <WAKE>              Wake up delay in seconds to reconnect [default: 300]
+  -h, --help                     Print help
+  -V, --version                  Print version
 ```
