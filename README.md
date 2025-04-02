@@ -5,7 +5,7 @@
 [![crates.io](https://img.shields.io/crates/v/twisterad.svg)](https://crates.io/crates/twisterad)
 
 Lightweight, in-memory CLI / daemon tool to rotate multiple [twister](https://github.com/twisterarmy/twister-core) ads on a single mining node,
-through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust-bitcoincore-rpc) library.
+through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust-twistercore-rpc) library.
 
 Optimal to run as the systemd unit that waits for a twister connection and then begins updating promotional messages with every new block found.
 
