@@ -20,6 +20,10 @@
         {
             "username":"nobody",
             "message":"@twisterarmy is the #twister project supported by community\nhttps://twisterarmy.github.io/"
+        },
+        {
+            "username":"nobody",
+            "message":"Rotate multiple ads on a single #twister node:\nhttps://github.com/twisterarmy/twisterad"
         }
     ]
 }
