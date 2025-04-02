@@ -24,9 +24,10 @@ fn main() {
         }
     }
 
-    let mut b: u64 = 0;
-    let mut i: usize = 0;
-    let l = config.rotate.len();
+    let len = config.rotate.len();
+    let mut block: u64 = 0;
+    let mut index: usize = 0;
+    let mut is_exit_request: bool = false;
 
     loop {
         match Client::new(
@@ -47,9 +48,20 @@ fn main() {
                 loop {
                     match rpc.set_generate(true, argument.processors) {
                         Ok(()) => match rpc.get_block_count() {
-                            Ok(block_count) => {
-                                if block_count > b {
-                                    println!("Block #{block_count}");
+                            Ok(height) => {
+                                if height > block {
+                                    println!("Block #{height}");
+                                    if is_exit_request {
+                                        match rpc.set_generate(false, argument.processors) {
+                                            Ok(()) => {
+                                                println!("Miner disabled, exit.");
+                                                return;
+                                            }
+                                            Err(e) => panic!("Could not stop the miner: {e}"),
+                                        }
+                                    } else if index == 0 {
+                                        println!("Begin new rotation..");
+                                    }
                                     for ad in &config.rotate {
                                         if !user_exists(
                                             &ad.username,
@@ -62,39 +74,30 @@ fn main() {
                                         }
                                     }
                                     match rpc.set_spam_message(
-                                        &config.rotate[i].username,
-                                        &config.rotate[i].message,
+                                        &config.rotate[index].username,
+                                        &config.rotate[index].message,
                                         Some("replace"),
                                     ) {
                                         Ok(m) => println!(
-                                            "Ad changed to #{i} by @{} {:?}",
-                                            &config.rotate[i].username, m
+                                            "Ad changed to #{index} by @{} {:?}",
+                                            &config.rotate[index].username, m
                                         ),
                                         Err(e) => {
                                             println!("Could not update ad: {e}");
                                             break;
                                         }
                                     }
-                                    if l > i + 1 {
-                                        i += 1
+                                    if len >= index {
+                                        index += 1
                                     } else {
-                                        i = 0;
-                                        println!("Ads queue processed!");
-                                        if argument.rotate {
-                                            println!("Begin new rotation..")
-                                        } else {
-                                            match rpc.set_generate(false, argument.processors) {
-                                                Ok(()) => {
-                                                    println!("Miner disabled, exit.");
-                                                    return;
-                                                }
-                                                Err(e) => panic!("Could not stop the miner: {e}"),
-                                            }
+                                        index = 0;
+                                        if !argument.rotate {
+                                            is_exit_request = true
                                         }
                                     }
-                                    b = block_count
+                                    block = height
                                 } else {
-                                    println!("Blockchain is up to date ({b}/{block_count})")
+                                    println!("Blockchain is up to date ({block}/{height})")
                                 }
                             }
                             Err(e) => {
