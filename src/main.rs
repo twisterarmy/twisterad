@@ -115,7 +115,7 @@ fn main() {
                     sleep(Duration::from_secs(argument.delay))
                 }
             }
-            Err(e) => eprintln!("Could not connect to client: {e}"),
+            Err(e) => println!("Connection lost: {e}"),
         }
         println!("Await {} seconds to reconnect..", argument.wait);
         sleep(Duration::from_secs(argument.wait))
