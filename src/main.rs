@@ -42,13 +42,13 @@ fn main() {
         ) {
             Ok(rpc) => {
                 println!(
-                    "Connection to {}:{} established!",
+                    "Begin new connection to {}:{}..",
                     config.rpc.server.host, config.rpc.server.port
                 );
                 loop {
-                    match rpc.set_generate(true, argument.processors) {
-                        Ok(()) => match rpc.get_block_count() {
-                            Ok(height) => {
+                    match rpc.get_block_count() {
+                        Ok(height) => match rpc.set_generate(true, argument.processors) {
+                            Ok(()) => {
                                 if height > block {
                                     println!("Block #{height}");
                                     if is_exit_request {
@@ -102,12 +102,12 @@ fn main() {
                                 }
                             }
                             Err(e) => {
-                                eprintln!("Could not get block count: {e}");
+                                eprintln!("Could not start the miner: {e}");
                                 break;
                             }
                         },
                         Err(e) => {
-                            eprintln!("Could not start the miner: {e}");
+                            println!("Could not get block count: {e}");
                             break;
                         }
                     }
