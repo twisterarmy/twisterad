@@ -54,7 +54,7 @@ fn main() {
                                     if is_exit_request {
                                         match rpc.set_generate(false, argument.processors) {
                                             Ok(()) => {
-                                                println!("Miner disabled, exit.");
+                                                println!("Miner disabled as end of queue, exit.");
                                                 return;
                                             }
                                             Err(e) => panic!("Could not stop the miner: {e}"),
