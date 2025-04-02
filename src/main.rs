@@ -87,7 +87,7 @@ fn main() {
                                             break;
                                         }
                                     }
-                                    if len >= index {
+                                    if len > index + 1 {
                                         index += 1
                                     } else {
                                         index = 0;
