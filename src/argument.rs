@@ -3,8 +3,8 @@ use clap::Parser;
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 pub struct Argument {
-    /// Configuration file
-    #[arg(short, long, default_value_t = String::from("config.json"))]
+    /// Configuration file, required
+    #[arg(short, long)]
     pub config: String,
 
     /// Rotation queue delay, seconds

@@ -32,7 +32,7 @@ cargo install twisterad
 Usage: twisterad [OPTIONS] --config <CONFIG>
 
 Options:
-  -c, --config <CONFIG>          Configuration file [default: config.json]
+  -c, --config <CONFIG>          Configuration file, required
   -d, --delay <DELAY>            Rotation queue delay, seconds [default: 60]
   -p, --processors <PROCESSORS>  Processors limit to mine
   -r, --rotate                   Rotate ads or stop the miner on complete
