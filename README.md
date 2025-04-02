@@ -7,9 +7,9 @@
 Lightweight, in-memory CLI / daemon tool to rotate multiple [twister](https://github.com/twisterarmy/twister-core) ads on a single mining node,
 through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust-twistercore-rpc) library.
 
-Optimal to run as the systemd unit that waits for a twister connection and then begins updating promotional messages with every new block found.
+It is optimal to run as a systemd unit that waits for a `twisterd` connection and then begins updating promotional messages with each new block found.
 
-Check out `config.json` to setup remote / local connection or update default promotional messages for users!
+Check out available [CLI options](#cli) and `config.json` to setup `twisterd` connection and update promotions!
 
 ## Install
 
@@ -26,7 +26,8 @@ cargo install twisterad
 * `cd twisterad`
 * `cargo run -- -c path/to/config.json`
 
-## Options
+
+## CLI
 
 ``` bash
 Usage: twisterad [OPTIONS] --config <CONFIG>
@@ -40,3 +41,52 @@ Options:
   -h, --help                     Print help
   -V, --version                  Print version
 ```
+
+## System
+
+To run `twisterad` as `systemd` unit (on background)
+
+* `cd twisterad` - navigate sources directory
+* `cargo build --release` - compile optimized binary
+* `useradd twisterad` - create new user for `twisterad` process
+* `cp target/release/twisterad /usr/bin/twisterad` - copy binary into system location
+* `chmod 0700 /usr/bin/twisterad` - give required permissions
+* `chown twisterad:twisterad /usr/bin/twisterad` - allow user/group access
+* `mkdir /var/log/twisterad` - create destination for the logs
+* `cp config.conf /etc/twisterad.conf` - copy and customize default config
+
+Create new `systemd` configuration: `nano /etc/systemd/system/twisterad.service`
+
+``` twisterad.service
+[Unit]
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=twisterad
+Group=twisterad
+ExecStart=/usr/bin/twisterad -c /etc/twisterad.conf --rotate
+StandardOutput=file:/var/log/twisterad/debug.log
+StandardError=file:/var/log/twisterad/error.log
+
+[Install]
+WantedBy=multi-user.target
+```
+* to disable debug output, set `null` for `StandardOutput` or/and `StandardError`
+
+Apply changes:
+
+* `systemctl daemon-reload` - reload unit configuration
+* `systemctl enable` - start on system boot
+* `systemctl start twisterad` - launch
+* `systemctl status twisterad` - check service status
+
+> [!NOTICE]
+> After launch, `twisterad` listens for the `twisterd` connection to be established,
+> and then begins rotation according to the configuration and startup arguments;
+>
+> When `twisterd` connection is lost, `twisterad` will wait for reconnection
+> and continue rotation from the previous memory state. It could be also useful for the desktop
+> users, who running their `twisterd` nodes periodically.
+>
