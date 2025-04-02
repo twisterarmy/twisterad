@@ -135,7 +135,7 @@ fn main() {
                     sleep(Duration::from_secs(argument.delay))
                 }
             }
-            Err(e) => println!("Connection lost: {e}"),
+            Err(e) => println!("[{}] connection lost: {e}", now()),
         }
         println!("[{}] await {} seconds to reconnect..", now(), argument.wait);
         sleep(Duration::from_secs(argument.wait))
