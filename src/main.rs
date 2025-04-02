@@ -13,14 +13,17 @@ fn main() {
         serde_json::from_reader(BufReader::new(File::open(argument.config).unwrap())).unwrap();
 
     if config.rotate.is_empty() {
-        panic!("At least one ad is required to continue!")
+        panic!("[{}] at least one ad is required to continue!", now())
     }
     for (n, ad) in config.rotate.iter().enumerate() {
         if ad.message.is_empty() {
-            panic!("Message for ad #{n} should not be empty!")
+            panic!("[{}] message for ad #{n} should not be empty!", now())
         }
         if ad.message.len() > 140 {
-            panic!("Message length in ad #{n} reached 140 bytes limit!")
+            panic!(
+                "[{}] message length in ad #{n} reached 140 bytes limit!",
+                now()
+            )
         }
     }
 
@@ -42,25 +45,32 @@ fn main() {
         ) {
             Ok(rpc) => {
                 println!(
-                    "Begin new connection to {}:{}..",
-                    config.rpc.server.host, config.rpc.server.port
+                    "[{}] begin new connection to {}:{}..",
+                    now(),
+                    config.rpc.server.host,
+                    config.rpc.server.port
                 );
                 loop {
                     match rpc.get_block_count() {
                         Ok(height) => match rpc.set_generate(true, argument.processors) {
                             Ok(()) => {
                                 if height > block {
-                                    println!("Block #{height}");
+                                    println!("[{}] block #{height}", now());
                                     if is_exit_request {
                                         match rpc.set_generate(false, argument.processors) {
                                             Ok(()) => {
-                                                println!("Miner disabled as end of queue, exit.");
+                                                println!(
+                                                    "[{}] miner disabled as end of queue, exit.",
+                                                    now()
+                                                );
                                                 return;
                                             }
-                                            Err(e) => panic!("Could not stop the miner: {e}"),
+                                            Err(e) => {
+                                                panic!("[{}] could not stop the miner: {e}", now())
+                                            }
                                         }
                                     } else if index == 0 {
-                                        println!("Begin new rotation..");
+                                        println!("[{}] begin new rotation..", now());
                                     }
                                     for ad in &config.rotate {
                                         if !user_exists(
@@ -68,7 +78,8 @@ fn main() {
                                             rpc.list_wallet_users().unwrap(),
                                         ) {
                                             panic!(
-                                                "Username @{} does not exist for this connection!",
+                                                "[{}] username @{} does not exist for this connection!",
+                                                now(),
                                                 ad.username
                                             )
                                         }
@@ -80,11 +91,13 @@ fn main() {
                                         Some("replace"),
                                     ) {
                                         Ok(m) => println!(
-                                            "Ad changed to #{number} by @{} {:?}",
-                                            &config.rotate[index].username, m
+                                            "[{}] ad changed to #{number} by @{} {:?}",
+                                            now(),
+                                            &config.rotate[index].username,
+                                            m
                                         ),
                                         Err(e) => {
-                                            eprintln!("Could not update ad: {e}");
+                                            eprintln!("[{}] could not update ad: {e}", now());
                                             break;
                                         }
                                     }
@@ -98,26 +111,33 @@ fn main() {
                                     }
                                     block = height
                                 } else {
-                                    println!("Blockchain is up to date ({block}/{height})")
+                                    println!(
+                                        "[{}] blockchain is up to date ({block}/{height})",
+                                        now()
+                                    )
                                 }
                             }
                             Err(e) => {
-                                eprintln!("Could not start the miner: {e}");
+                                eprintln!("[{}] could not start the miner: {e}", now());
                                 break;
                             }
                         },
                         Err(e) => {
-                            println!("Could not get block count: {e}");
+                            println!("[{}] could not get block count: {e}", now());
                             break;
                         }
                     }
-                    println!("Await {} seconds for new block to rotate..", argument.delay);
+                    println!(
+                        "[{}] await {} seconds for new block to rotate..",
+                        now(),
+                        argument.delay
+                    );
                     sleep(Duration::from_secs(argument.delay))
                 }
             }
             Err(e) => println!("Connection lost: {e}"),
         }
-        println!("Await {} seconds to reconnect..", argument.wait);
+        println!("[{}] await {} seconds to reconnect..", now(), argument.wait);
         sleep(Duration::from_secs(argument.wait))
     }
 }
@@ -132,4 +152,9 @@ fn user_exists(name: &str, names: Vec<String>) -> bool {
         }
     }
     false
+}
+
+fn now() -> String {
+    let now: chrono::DateTime<chrono::Utc> = std::time::SystemTime::now().into();
+    now.to_rfc3339()
 }
