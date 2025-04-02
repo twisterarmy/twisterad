@@ -44,7 +44,7 @@ Options:
 
 ## System
 
-To run `twisterad` as `systemd` unit (on background)
+To run `twisterad` as the `systemd` unit (background process):
 
 * `cd twisterad` - navigate sources directory
 * `cargo build --release` - compile optimized binary
