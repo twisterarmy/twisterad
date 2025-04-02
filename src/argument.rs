@@ -19,7 +19,7 @@ pub struct Argument {
     #[arg(short, long)]
     pub rotate: bool,
 
-    /// Wake up delay to reconnect, seconds
+    /// Wait to server reconnect, seconds
     #[arg(short, long, default_value_t = 300)]
-    pub wake: u64,
+    pub wait: u64,
 }

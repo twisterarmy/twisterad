@@ -36,7 +36,7 @@ Options:
   -d, --delay <DELAY>            Rotation queue delay, seconds [default: 60]
   -p, --processors <PROCESSORS>  Processors limit to mine
   -r, --rotate                   Rotate ads or stop the miner on complete
-  -w, --wake <WAKE>              Wake up delay to reconnect, seconds [default: 300]
+  -w, --wait <WAIT>              Wait to server reconnect, seconds [default: 300]
   -h, --help                     Print help
   -V, --version                  Print version
 ```
