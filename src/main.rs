@@ -107,7 +107,7 @@ fn main() {
                             }
                         },
                         Err(e) => {
-                            eprintln!("Could start the miner: {e}");
+                            eprintln!("Could not start the miner: {e}");
                             break;
                         }
                     }
