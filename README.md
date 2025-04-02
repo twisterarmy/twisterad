@@ -9,7 +9,9 @@ through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust
 
 It is optimal to run as a systemd unit that waits for a `twisterd` connection and then begins updating promotional messages with each new block found.
 
-Check out available [CLI options](#cli) and `config.json` to setup `twisterd` connection and update promotions!
+Check out:
+* [CLI options](#cli)
+* `config.json` - to setup `twisterd` connection and update default promotions asset
 
 ## Install
 
@@ -49,13 +51,13 @@ To run `twisterad` as `systemd` unit (on background)
 * `cd twisterad` - navigate sources directory
 * `cargo build --release` - compile optimized binary
 * `useradd twisterad` - create new user for `twisterad` process
-* `cp target/release/twisterad /usr/bin/twisterad` - copy binary into system location
+* `cp target/release/twisterad /usr/bin/twisterad` - copy binary into native system location
 * `chmod 0700 /usr/bin/twisterad` - give required permissions
 * `chown twisterad:twisterad /usr/bin/twisterad` - allow user/group access
 * `mkdir /var/log/twisterad` - create destination for the logs
 * `cp config.conf /etc/twisterad.conf` - copy and customize default config
 
-Create new `systemd` configuration: `nano /etc/systemd/system/twisterad.service`
+Create new `systemd` configuration file: `nano /etc/systemd/system/twisterad.service`
 
 ``` twisterad.service
 [Unit]
@@ -73,7 +75,7 @@ StandardError=file:/var/log/twisterad/error.log
 [Install]
 WantedBy=multi-user.target
 ```
-* to disable debug output, set `null` for `StandardOutput` or/and `StandardError`
+* to disable debug output, set `null` for `StandardOutput` or `StandardError`
 
 Apply changes:
 
@@ -82,7 +84,7 @@ Apply changes:
 * `systemctl start twisterad` - launch
 * `systemctl status twisterad` - check service status
 
-> [!NOTICE]
+> [!INFO]
 > After launch, `twisterad` listens for the `twisterd` connection to be established,
 > and then begins rotation according to the configuration and startup arguments;
 >
