@@ -7,7 +7,7 @@ pub struct Argument {
     #[arg(short, long, default_value_t = String::from("config.json"))]
     pub config: String,
 
-    /// Rotation queue delay in seconds
+    /// Rotation queue delay, seconds
     #[arg(short, long, default_value_t = 60)]
     pub delay: u64,
 
@@ -19,7 +19,7 @@ pub struct Argument {
     #[arg(short, long)]
     pub rotate: bool,
 
-    /// Wake up delay in seconds to reconnect
+    /// Wake up delay to reconnect, seconds
     #[arg(short, long, default_value_t = 300)]
     pub wake: u64,
 }
