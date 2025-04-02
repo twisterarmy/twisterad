@@ -154,7 +154,9 @@ fn user_exists(name: &str, names: Vec<String>) -> bool {
     false
 }
 
-fn now() -> String {
-    let now: chrono::DateTime<chrono::Utc> = std::time::SystemTime::now().into();
-    now.to_rfc3339()
+fn now() -> u128 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_millis()
 }
