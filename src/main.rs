@@ -83,7 +83,7 @@ fn main() {
                                             &config.rotate[index].username, m
                                         ),
                                         Err(e) => {
-                                            println!("Could not update ad: {e}");
+                                            eprintln!("Could not update ad: {e}");
                                             break;
                                         }
                                     }
@@ -97,16 +97,16 @@ fn main() {
                                     }
                                     block = height
                                 } else {
-                                    println!("Blockchain is up to date ({block}/{height})")
+                                    eprintln!("Blockchain is up to date ({block}/{height})")
                                 }
                             }
                             Err(e) => {
-                                println!("Could not get block count: {e}");
+                                eprintln!("Could not get block count: {e}");
                                 break;
                             }
                         },
                         Err(e) => {
-                            println!("Could start the miner: {e}");
+                            eprintln!("Could start the miner: {e}");
                             break;
                         }
                     }
@@ -114,7 +114,7 @@ fn main() {
                     sleep(Duration::from_secs(argument.delay))
                 }
             }
-            Err(e) => println!("Could not connect to client: {e}"),
+            Err(e) => eprintln!("Could not connect to client: {e}"),
         }
         println!("Await {} seconds to reconnect..", argument.wake);
         sleep(Duration::from_secs(argument.wake))
