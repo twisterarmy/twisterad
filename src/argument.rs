@@ -20,6 +20,6 @@ pub struct Argument {
     pub rotate: bool,
 
     /// Wait to server reconnect, seconds
-    #[arg(short, long, default_value_t = 300)]
+    #[arg(short, long, default_value_t = 900)]
     pub wait: u64,
 }
