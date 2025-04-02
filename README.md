@@ -84,7 +84,7 @@ Apply changes:
 * `systemctl start twisterad` - launch
 * `systemctl status twisterad` - check service status
 
-> [!INFO]
+> [!NOTE]
 > After launch, `twisterad` listens for the `twisterd` connection to be established,
 > and then begins rotation according to the configuration and startup arguments;
 >
