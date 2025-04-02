@@ -73,13 +73,14 @@ fn main() {
                                             )
                                         }
                                     }
+                                    let number = index + 1;
                                     match rpc.set_spam_message(
                                         &config.rotate[index].username,
                                         &config.rotate[index].message,
                                         Some("replace"),
                                     ) {
                                         Ok(m) => println!(
-                                            "Ad changed to #{index} by @{} {:?}",
+                                            "Ad changed to #{number} by @{} {:?}",
                                             &config.rotate[index].username, m
                                         ),
                                         Err(e) => {
@@ -87,7 +88,7 @@ fn main() {
                                             break;
                                         }
                                     }
-                                    if len > index + 1 {
+                                    if len > number {
                                         index += 1
                                     } else {
                                         index = 0;
