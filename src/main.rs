@@ -98,7 +98,7 @@ fn main() {
                                     }
                                     block = height
                                 } else {
-                                    eprintln!("Blockchain is up to date ({block}/{height})")
+                                    println!("Blockchain is up to date ({block}/{height})")
                                 }
                             }
                             Err(e) => {
