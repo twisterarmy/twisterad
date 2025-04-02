@@ -9,9 +9,7 @@ through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust
 
 It is optimal to run as a systemd unit that waits for a `twisterd` connection and then begins updating promotional messages with each new block found.
 
-Check out:
-* [CLI options](#cli)
-* `config.json` - to setup `twisterd` connection and update default promotions asset
+Check out `config.json` to setup `twisterd` connection and update default promotions asset!
 
 ## Install
 
