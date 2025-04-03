@@ -12,7 +12,7 @@ pub struct Argument {
     pub delay: u64,
 
     /// Rotation mode:
-    /// * `c` - continue in cycle
+    /// * `c` - cycle
     /// * `s` - stop, disable worker
     #[arg(short, long, default_value_t = String::from("c"))]
     pub mode: String,
@@ -24,10 +24,6 @@ pub struct Argument {
     /// Iterations quantity before apply rotation `mode`
     #[arg(short, long)]
     pub quantity: Option<usize>,
-
-    /// Rotate ads or stop the miner on complete
-    #[arg(short, long)]
-    pub rotate: bool,
 
     /// Wait to server reconnect, seconds
     #[arg(short, long, default_value_t = 900)]

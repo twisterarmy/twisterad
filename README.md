@@ -33,10 +33,9 @@ Usage: twisterad [OPTIONS] --config <CONFIG>
 Options:
   -c, --config <CONFIG>          Configuration file, required
   -d, --delay <DELAY>            Rotation queue delay, seconds [default: 60]
-  -m, --mode <MODE>              Rotation mode: * `c` - continue in cycle * `s` - stop, disable worker [default: c]
+  -m, --mode <MODE>              Rotation mode: * `c` - cycle * `s` - stop, disable worker [default: c]
   -p, --processors <PROCESSORS>  Processors limit to mine
   -q, --quantity <QUANTITY>      Iterations quantity before apply rotation `mode`
-  -r, --rotate                   Rotate ads or stop the miner on complete
   -w, --wait <WAIT>              Wait to server reconnect, seconds [default: 900]
   -h, --help                     Print help
   -V, --version                  Print version
@@ -66,7 +65,7 @@ Wants=network-online.target
 Type=simple
 User=twisterad
 Group=twisterad
-ExecStart=/usr/bin/twisterad -c /etc/twisterad.conf --rotate
+ExecStart=/usr/bin/twisterad -c /etc/twisterad.conf
 StandardOutput=file:/var/log/twisterad/debug.log
 StandardError=file:/var/log/twisterad/error.log
 
