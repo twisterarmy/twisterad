@@ -25,7 +25,6 @@ cargo install twisterad
 * `cd twisterad`
 * `cargo run -- -c path/to/config.json`
 
-
 ## CLI
 
 ``` bash
@@ -34,7 +33,9 @@ Usage: twisterad [OPTIONS] --config <CONFIG>
 Options:
   -c, --config <CONFIG>          Configuration file, required
   -d, --delay <DELAY>            Rotation queue delay, seconds [default: 60]
+  -m, --mode <MODE>              Rotation mode: * `c` - continue in cycle * `s` - stop, disable worker [default: c]
   -p, --processors <PROCESSORS>  Processors limit to mine
+  -q, --quantity <QUANTITY>      Iterations quantity before apply rotation `mode`
   -r, --rotate                   Rotate ads or stop the miner on complete
   -w, --wait <WAIT>              Wait to server reconnect, seconds [default: 900]
   -h, --help                     Print help

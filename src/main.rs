@@ -30,6 +30,7 @@ fn main() {
     let len = config.rotate.len();
     let mut block: u64 = 0;
     let mut index: usize = 0;
+    let mut quantity: usize = 0;
     let mut is_exit_request: bool = false;
 
     loop {
@@ -55,8 +56,12 @@ fn main() {
                         Ok(height) => match rpc.set_generate(true, argument.processors) {
                             Ok(()) => {
                                 if height > block {
+                                    quantity += 1;
                                     println!("[{}] block #{height}", now());
-                                    if is_exit_request {
+                                    if is_exit_request
+                                        || (argument.mode == "s"
+                                            && argument.quantity.is_some_and(|q| quantity > q))
+                                    {
                                         match rpc.set_generate(false, argument.processors) {
                                             Ok(()) => {
                                                 println!(
