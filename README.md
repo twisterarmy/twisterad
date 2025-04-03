@@ -3,12 +3,12 @@
 ![Build](https://github.com/twisterarmy/twisterad/actions/workflows/build.yml/badge.svg)
 [![crates.io](https://img.shields.io/crates/v/twisterad.svg)](https://crates.io/crates/twisterad)
 
-Lightweight, in-memory CLI / daemon tool to rotate multiple [twister](https://github.com/twisterarmy/twister-core) ads on a single mining node,
+Lightweight, in-memory CLI tool & daemon to rotate multiple [twister](https://github.com/twisterarmy/twister-core) ads on single worker,
 through modified [Bitcoin Core JSON-RPC API](https://github.com/twisterarmy/rust-twistercore-rpc) library.
 
-It is optimal to run as a systemd unit that waits for a `twisterd` connection and then begins updating promotional messages with each new block found.
+Optimal to run as `systemd` unit that waits for `twisterd` connection and then begins updating promotional messages with each new block found.
 
-Check out `config.json` to setup `twisterd` connection and update default promotions asset!
+Check out `config.json` to setup remote or local `twisterd` connection and update default promotions asset!
 
 ## Install
 
