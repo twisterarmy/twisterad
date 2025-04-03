@@ -56,7 +56,6 @@ fn main() {
                         Ok(height) => match rpc.set_generate(true, argument.processors) {
                             Ok(()) => {
                                 if height > block {
-                                    quantity += 1;
                                     println!("[{}] block #{height}", now());
                                     if is_exit_request {
                                         match rpc.set_generate(false, argument.processors) {
@@ -107,6 +106,7 @@ fn main() {
                                         index += 1
                                     } else {
                                         index = 0;
+                                        quantity += 1;
                                         if argument.mode == "s"
                                             && argument.quantity.is_some_and(|q| quantity > q)
                                         {
