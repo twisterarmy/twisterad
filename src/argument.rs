@@ -21,9 +21,9 @@ pub struct Argument {
     #[arg(short, long)]
     pub processors: Option<i64>,
 
-    /// Iterations quantity before apply rotation `mode`
+    /// Rotations quantity, before apply rotation `mode`
     #[arg(short, long)]
-    pub quantity: Option<usize>,
+    pub rotations: Option<usize>,
 
     /// Wait to server reconnect, seconds
     #[arg(short, long, default_value_t = 900)]

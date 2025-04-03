@@ -30,7 +30,7 @@ fn main() {
     let len = config.rotate.len();
     let mut block: u64 = 0;
     let mut index: usize = 0;
-    let mut quantity: usize = 0;
+    let mut total_rotations: usize = 0;
     let mut is_exit_request: bool = false;
 
     loop {
@@ -106,9 +106,11 @@ fn main() {
                                         index += 1
                                     } else {
                                         index = 0;
-                                        quantity += 1;
+                                        total_rotations += 1;
                                         if argument.mode == "s"
-                                            && argument.quantity.is_some_and(|q| quantity > q)
+                                            && argument
+                                                .rotations
+                                                .is_some_and(|r| total_rotations > r)
                                         {
                                             is_exit_request = true
                                         }

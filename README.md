@@ -35,7 +35,7 @@ Options:
   -d, --delay <DELAY>            Rotation queue delay, seconds [default: 60]
   -m, --mode <MODE>              Rotation mode: * `c` - cycle * `s` - stop, disable worker [default: c]
   -p, --processors <PROCESSORS>  Processors limit to mine
-  -q, --quantity <QUANTITY>      Iterations quantity before apply rotation `mode`
+  -r, --rotations <ROTATIONS>    Rotations quantity, before apply rotation `mode`
   -w, --wait <WAIT>              Wait to server reconnect, seconds [default: 900]
   -h, --help                     Print help
   -V, --version                  Print version
