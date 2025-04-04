@@ -1,37 +1,22 @@
-{
-    "rpc":
+[
     {
-        "server":{
-            "scheme":"http",
-            "host":"127.0.0.1",
-            "port":28332
-        },
-        "auth": {
-            "user":"user",
-            "password":"pwd"
-        }
+        "username":"nobody",
+        "message":"Promoted posts are needed to run the network infrastructure. If you want to help, start generating blocks and advertise. [en]"
     },
-    "rotate":
-    [
-        {
-            "username":"nobody",
-            "message":"Promoted posts are needed to run the network infrastructure. If you want to help, start generating blocks and advertise. [en]"
-        },
-        {
-            "username":"nobody",
-            "message":"@twisterarmy is #twister project supported by community\nhttps://twisterarmy.github.io/"
-        },
-        {
-            "username":"nobody",
-            "message":"Rotate multiple ads on a single #twister node:\nhttps://github.com/twisterarmy/twisterad"
-        },
-        {
-            "username":"nobody",
-            "message":"#Yggdrasil is a decentralized #IPv6 mesh network,\nsuitable for encrypted #twister connections!\nhttps://yggdrasil-network.github.io/"
-        },
-        {
-            "username":"nobody",
-            "message":"Performance SSD servers for web, streaming, gaming, VPN and everything in between:\nhttps://www.yourserver.se/portal/aff.php?aff=610"
-        }
-    ]
-}
+    {
+        "username":"nobody",
+        "message":"@twisterarmy is #twister project supported by community\nhttps://twisterarmy.github.io/"
+    },
+    {
+        "username":"nobody",
+        "message":"Rotate multiple ads on a single #twister node:\nhttps://github.com/twisterarmy/twisterad"
+    },
+    {
+        "username":"nobody",
+        "message":"#Yggdrasil is a decentralized #IPv6 mesh network,\nsuitable for encrypted #twister connections!\nhttps://yggdrasil-network.github.io/"
+    },
+    {
+        "username":"nobody",
+        "message":"Performance SSD servers for web, streaming, gaming, VPN and everything in between:\nhttps://www.yourserver.se/portal/aff.php?aff=610"
+    }
+]

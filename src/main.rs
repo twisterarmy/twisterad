@@ -9,13 +9,13 @@ use twistercore_rpc::{Auth, Client, RpcApi, jsonrpc::serde_json};
 
 fn main() {
     let argument = Argument::parse();
-    let config: Config =
+    let config: Vec<Config> =
         serde_json::from_reader(BufReader::new(File::open(argument.config).unwrap())).unwrap();
 
-    if config.rotate.is_empty() {
+    if config.is_empty() {
         panic!("[{}] at least one ad is required to continue!", now())
     }
-    for (n, ad) in config.rotate.iter().enumerate() {
+    for (n, ad) in config.iter().enumerate() {
         if ad.message.is_empty() {
             panic!("[{}] message for ad #{n} should not be empty!", now())
         }
@@ -27,7 +27,7 @@ fn main() {
         }
     }
 
-    let len = config.rotate.len();
+    let len = config.len();
     let mut block: u64 = 0;
     let mut index: usize = 0;
     let mut total_rotations: usize = 0;
@@ -35,30 +35,24 @@ fn main() {
 
     loop {
         match Client::new(
-            &format!(
-                "{}://{}:{}",
-                config.rpc.server.scheme, config.rpc.server.host, config.rpc.server.port
-            ),
-            match config.rpc.auth {
-                Some(ref auth) => Auth::UserPass(auth.user.to_string(), auth.password.to_string()),
-                None => Auth::None,
-            },
+            &format!("{}://{}:{}", argument.scheme, argument.host, argument.port),
+            Auth::UserPass(argument.user.to_string(), argument.password.to_string()),
         ) {
             Ok(rpc) => {
                 println!(
                     "[{}] begin new connection to {}:{}..",
                     now(),
-                    config.rpc.server.host,
-                    config.rpc.server.port
+                    argument.host,
+                    argument.port
                 );
                 loop {
                     match rpc.get_block_count() {
-                        Ok(height) => match rpc.set_generate(true, argument.processors) {
+                        Ok(height) => match rpc.set_generate(true, argument.jobs) {
                             Ok(()) => {
                                 if height > block {
                                     println!("[{}] block #{height}", now());
                                     if is_exit_request {
-                                        match rpc.set_generate(false, argument.processors) {
+                                        match rpc.set_generate(false, argument.jobs) {
                                             Ok(()) => {
                                                 println!(
                                                     "[{}] miner disabled as end of queue, exit.",
@@ -73,7 +67,7 @@ fn main() {
                                     } else if index == 0 {
                                         println!("[{}] begin new rotation..", now());
                                     }
-                                    for ad in &config.rotate {
+                                    for ad in &config {
                                         if !user_exists(
                                             &ad.username,
                                             rpc.list_wallet_users().unwrap(),
@@ -87,14 +81,14 @@ fn main() {
                                     }
                                     let number = index + 1;
                                     match rpc.set_spam_message(
-                                        &config.rotate[index].username,
-                                        &config.rotate[index].message,
+                                        &config[index].username,
+                                        &config[index].message,
                                         Some("replace"),
                                     ) {
                                         Ok(m) => println!(
                                             "[{}] ad changed to #{number} by @{} {:?}",
                                             now(),
-                                            &config.rotate[index].username,
+                                            &config[index].username,
                                             m
                                         ),
                                         Err(e) => {

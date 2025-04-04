@@ -31,14 +31,19 @@ cargo install twisterad
 Usage: twisterad [OPTIONS] --config <CONFIG>
 
 Options:
-  -c, --config <CONFIG>          Configuration file, required
-  -d, --delay <DELAY>            Rotation queue delay, seconds [default: 60]
-  -m, --mode <MODE>              Rotation mode: * `c` - cycle * `s` - stop, disable worker [default: c]
-  -p, --processors <PROCESSORS>  Processors limit to mine
-  -r, --rotations <ROTATIONS>    Rotations quantity, before apply rotation `mode`
-  -w, --wait <WAIT>              Wait to server reconnect, seconds [default: 900]
-  -h, --help                     Print help
-  -V, --version                  Print version
+  -c, --config <CONFIG>        Configuration file, required
+  -d, --delay <DELAY>          Rotation queue delay, seconds [default: 60]
+      --host <HOST>            RPC host [default: 127.0.0.1]
+  -j, --jobs <JOBS>            Processor jobs to mine at once
+  -m, --mode <MODE>            Rotation mode: * `c` - cycle * `s` - stop, disable worker [default: c]
+  -p, --password <PASSWORD>    RPC password [default: pwd]
+      --port <PORT>            RPC port [default: 28332]
+  -r, --rotations <ROTATIONS>  Rotations quantity, before apply rotation `mode`
+  -s, --scheme <SCHEME>        RPC scheme [default: http]
+  -u, --user <USER>            RPC user [default: user]
+  -w, --wait <WAIT>            Wait to server reconnect, seconds [default: 900]
+  -h, --help                   Print help
+  -V, --version                Print version
 ```
 
 ## System
