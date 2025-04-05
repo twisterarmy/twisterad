@@ -8,7 +8,7 @@ use std::{
     fs::File,
     io::BufReader,
     thread::sleep,
-    time::{Duration, SystemTime},
+    time::{Duration, SystemTime, UNIX_EPOCH},
 };
 use twistercore_rpc::{Auth, Client, RpcApi, jsonrpc::serde_json};
 
@@ -61,7 +61,7 @@ fn main() {
                                     if let Some(latency) = argument.latency {
                                         if latency
                                             > SystemTime::now()
-                                                .duration_since(std::time::UNIX_EPOCH)
+                                                .duration_since(UNIX_EPOCH)
                                                 .unwrap()
                                                 .as_secs()
                                                 - block_time
@@ -194,7 +194,7 @@ fn user_exists(name: &str, names: Vec<String>) -> bool {
 
 fn now() -> u128 {
     SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
+        .duration_since(UNIX_EPOCH)
         .unwrap()
         .as_millis()
 }
