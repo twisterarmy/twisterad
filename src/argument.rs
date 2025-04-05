@@ -16,8 +16,12 @@ pub struct Argument {
     pub host: String,
 
     /// Processor jobs to mine at once
-    #[arg(long, short, long)]
+    #[arg(short, long, long)]
     pub jobs: Option<i64>,
+
+    /// Miner latency in seconds, useful when blocks are being generated too quickly
+    #[arg(short, long)]
+    pub latency: Option<u64>,
 
     /// Rotation mode:
     /// * `c` - cycle

@@ -4,7 +4,12 @@ mod config;
 use argument::Argument;
 use clap::Parser;
 use config::Config;
-use std::{fs::File, io::BufReader, thread::sleep, time::Duration};
+use std::{
+    fs::File,
+    io::BufReader,
+    thread::sleep,
+    time::{Duration, SystemTime},
+};
 use twistercore_rpc::{Auth, Client, RpcApi, jsonrpc::serde_json};
 
 fn main() {
@@ -15,7 +20,8 @@ fn main() {
     if config.is_empty() {
         panic!("[{}] at least one ad is required to continue!", now())
     }
-    for (n, ad) in config.iter().enumerate() {
+    for (i, ad) in config.iter().enumerate() {
+        let n = i + 1;
         if ad.message.is_empty() {
             panic!("[{}] message for ad #{n} should not be empty!", now())
         }
@@ -27,10 +33,10 @@ fn main() {
         }
     }
 
-    let len = config.len();
-    let mut block: u64 = 0;
-    let mut index: usize = 0;
-    let mut total_rotations: usize = 0;
+    let l = config.len();
+    let mut best_block_time: u64 = 0;
+    let mut ad_index: usize = 0;
+    let mut iteration_total: usize = 0;
     let mut is_exit_request: bool = false;
 
     loop {
@@ -43,28 +49,56 @@ fn main() {
                     "[{}] begin new connection to {}:{}..",
                     now(),
                     argument.host,
-                    argument.port
+                    argument.port,
                 );
                 loop {
-                    match rpc.get_block_count() {
-                        Ok(height) => match rpc.set_generate(true, argument.jobs) {
-                            Ok(()) => {
-                                if height > block {
-                                    println!("[{}] block #{height}", now());
+                    match rpc.get_best_block_hash() {
+                        Ok(hash) => match rpc.get_block(&hash, true) {
+                            Ok(block) => {
+                                let block_time = block.time as u64;
+                                if block_time > best_block_time {
+                                    println!("[{}] block #{}", now(), block_time);
+                                    if let Some(latency) = argument.latency {
+                                        if latency
+                                            > SystemTime::now()
+                                                .duration_since(std::time::UNIX_EPOCH)
+                                                .unwrap()
+                                                .as_secs()
+                                                - block_time
+                                        {
+                                            match rpc.set_generate(false, argument.jobs) {
+                                                Ok(()) => {
+                                                    println!(
+                                                        "[{}] apply worker latency for {latency} seconds..",
+                                                        now()
+                                                    );
+                                                    sleep(Duration::from_secs(latency))
+                                                }
+                                                Err(e) => {
+                                                    eprintln!(
+                                                        "[{}] could not stop the worker: {e}",
+                                                        now()
+                                                    );
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    best_block_time = block_time;
                                     if is_exit_request {
                                         match rpc.set_generate(false, argument.jobs) {
                                             Ok(()) => {
                                                 println!(
-                                                    "[{}] miner disabled as end of queue, exit.",
+                                                    "[{}] worker disabled as end of queue, exit.",
                                                     now()
                                                 );
                                                 return;
                                             }
                                             Err(e) => {
-                                                panic!("[{}] could not stop the miner: {e}", now())
+                                                panic!("[{}] could not stop the worker: {e}", now())
                                             }
                                         }
-                                    } else if index == 0 {
+                                    } else if ad_index == 0 {
                                         println!("[{}] begin new rotation..", now());
                                     }
                                     for ad in &config {
@@ -79,16 +113,16 @@ fn main() {
                                             )
                                         }
                                     }
-                                    let number = index + 1;
+                                    let n = ad_index + 1;
                                     match rpc.set_spam_message(
-                                        &config[index].username,
-                                        &config[index].message,
+                                        &config[ad_index].username,
+                                        &config[ad_index].message,
                                         Some("replace"),
                                     ) {
                                         Ok(m) => println!(
-                                            "[{}] ad changed to #{number} by @{} {:?}",
+                                            "[{}] ad changed to #{n} by @{} {:?}",
                                             now(),
-                                            &config[index].username,
+                                            &config[ad_index].username,
                                             m
                                         ),
                                         Err(e) => {
@@ -96,29 +130,33 @@ fn main() {
                                             break;
                                         }
                                     }
-                                    if len > number {
-                                        index += 1
+                                    if l > n {
+                                        ad_index += 1
                                     } else {
-                                        index = 0;
-                                        total_rotations += 1;
+                                        ad_index = 0;
+                                        iteration_total += 1;
                                         if argument.mode == "s"
                                             && argument
                                                 .rotations
-                                                .is_some_and(|r| total_rotations > r)
+                                                .is_some_and(|r| iteration_total > r)
                                         {
                                             is_exit_request = true
                                         }
                                     }
-                                    block = height
+                                    if let Err(e) = rpc.set_generate(true, argument.jobs) {
+                                        eprintln!("[{}] could not start the worker: {e}", now());
+                                        break;
+                                    }
                                 } else {
                                     println!(
-                                        "[{}] blockchain is up to date ({block}/{height})",
-                                        now()
+                                        "[{}] blockchain is up to date (U{})",
+                                        now(),
+                                        block.time
                                     )
                                 }
                             }
                             Err(e) => {
-                                eprintln!("[{}] could not start the miner: {e}", now());
+                                eprintln!("[{}] could not get block `{hash}`: {e}", now());
                                 break;
                             }
                         },
@@ -146,8 +184,8 @@ fn user_exists(name: &str, names: Vec<String>) -> bool {
     if name == "nobody" {
         return true;
     }
-    for value in names {
-        if name == value {
+    for n in names {
+        if name == n {
             return true;
         }
     }
@@ -155,7 +193,7 @@ fn user_exists(name: &str, names: Vec<String>) -> bool {
 }
 
 fn now() -> u128 {
-    std::time::SystemTime::now()
+    SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .unwrap()
         .as_millis()

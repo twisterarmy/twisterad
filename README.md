@@ -35,6 +35,7 @@ Options:
   -d, --delay <DELAY>          Rotation queue delay, seconds [default: 60]
       --host <HOST>            RPC host [default: 127.0.0.1]
   -j, --jobs <JOBS>            Processor jobs to mine at once
+  -l, --latency <LATENCY>      Miner latency in seconds, useful when blocks are being generated too quickly [default: 0]
   -m, --mode <MODE>            Rotation mode: * `c` - cycle * `s` - stop, disable worker [default: c]
   -p, --password <PASSWORD>    RPC password [default: pwd]
       --port <PORT>            RPC port [default: 28332]
