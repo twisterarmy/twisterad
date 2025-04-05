@@ -58,32 +58,6 @@ fn main() {
                                 let block_time = block.time as u64;
                                 if block_time > best_block_time {
                                     println!("[{}] block #{}", now(), block_time);
-                                    if let Some(latency) = argument.latency {
-                                        if latency
-                                            > SystemTime::now()
-                                                .duration_since(UNIX_EPOCH)
-                                                .unwrap()
-                                                .as_secs()
-                                                - block_time
-                                        {
-                                            match rpc.set_generate(false, argument.jobs) {
-                                                Ok(()) => {
-                                                    println!(
-                                                        "[{}] apply worker latency for {latency} seconds..",
-                                                        now()
-                                                    );
-                                                    sleep(Duration::from_secs(latency))
-                                                }
-                                                Err(e) => {
-                                                    eprintln!(
-                                                        "[{}] could not stop the worker: {e}",
-                                                        now()
-                                                    );
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
                                     best_block_time = block_time;
                                     if is_exit_request {
                                         match rpc.set_generate(false, argument.jobs) {
@@ -143,6 +117,32 @@ fn main() {
                                             is_exit_request = true
                                         }
                                     }
+                                    if let Some(latency) = argument.latency {
+                                        if latency
+                                            > SystemTime::now()
+                                                .duration_since(UNIX_EPOCH)
+                                                .unwrap()
+                                                .as_secs()
+                                                - block_time
+                                        {
+                                            match rpc.set_generate(false, argument.jobs) {
+                                                Ok(()) => {
+                                                    println!(
+                                                        "[{}] apply worker latency for {latency} seconds..",
+                                                        now()
+                                                    );
+                                                    sleep(Duration::from_secs(latency))
+                                                }
+                                                Err(e) => {
+                                                    eprintln!(
+                                                        "[{}] could not stop the worker: {e}",
+                                                        now()
+                                                    );
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
                                     if let Err(e) = rpc.set_generate(true, argument.jobs) {
                                         eprintln!("[{}] could not start the worker: {e}", now());
                                         break;
@@ -166,7 +166,7 @@ fn main() {
                         }
                     }
                     println!(
-                        "[{}] await {} seconds for new block to rotate..",
+                        "[{}] await {} seconds for new block..",
                         now(),
                         argument.delay
                     );
