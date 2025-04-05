@@ -1,9 +1,11 @@
 mod argument;
 mod config;
+mod state;
 
 use argument::Argument;
 use clap::Parser;
 use config::Config;
+use state::State;
 use std::{
     fs::File,
     io::BufReader,
@@ -34,10 +36,7 @@ fn main() {
     }
 
     let l = config.len();
-    let mut best_block_time: u64 = 0;
-    let mut ad_index: usize = 0;
-    let mut iteration_total: usize = 0;
-    let mut is_exit_request: bool = false;
+    let mut state = State::new();
 
     loop {
         match Client::new(
@@ -56,10 +55,10 @@ fn main() {
                         Ok(hash) => match rpc.get_block(&hash, true) {
                             Ok(block) => {
                                 let block_time = block.time as u64;
-                                if block_time > best_block_time {
+                                if block_time > state.best_block_time {
                                     println!("[{}] block #{}", now(), block_time);
-                                    best_block_time = block_time;
-                                    if is_exit_request {
+                                    state.best_block_time = block_time;
+                                    if state.is_exit_request {
                                         match rpc.set_generate(false, argument.jobs) {
                                             Ok(()) => {
                                                 println!(
@@ -72,7 +71,7 @@ fn main() {
                                                 panic!("[{}] could not stop the worker: {e}", now())
                                             }
                                         }
-                                    } else if ad_index == 0 {
+                                    } else if state.ad_index == 0 {
                                         println!("[{}] begin new rotation..", now());
                                     }
                                     for ad in &config {
@@ -87,16 +86,16 @@ fn main() {
                                             )
                                         }
                                     }
-                                    let n = ad_index + 1;
+                                    let n = state.ad_index + 1;
                                     match rpc.set_spam_message(
-                                        &config[ad_index].username,
-                                        &config[ad_index].message,
+                                        &config[state.ad_index].username,
+                                        &config[state.ad_index].message,
                                         Some("replace"),
                                     ) {
                                         Ok(m) => println!(
                                             "[{}] ad changed to #{n} by @{} {:?}",
                                             now(),
-                                            &config[ad_index].username,
+                                            &config[state.ad_index].username,
                                             m
                                         ),
                                         Err(e) => {
@@ -105,16 +104,16 @@ fn main() {
                                         }
                                     }
                                     if l > n {
-                                        ad_index += 1
+                                        state.ad_index += 1
                                     } else {
-                                        ad_index = 0;
-                                        iteration_total += 1;
+                                        state.ad_index = 0;
+                                        state.iteration_total += 1;
                                         if argument.mode == "s"
                                             && argument
                                                 .rotations
-                                                .is_some_and(|r| iteration_total > r)
+                                                .is_some_and(|r| state.iteration_total > r)
                                         {
-                                            is_exit_request = true
+                                            state.is_exit_request = true
                                         }
                                     }
                                     if let Some(latency) = argument.latency {
