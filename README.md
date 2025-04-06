@@ -13,8 +13,8 @@ Check out `config.json` to setup remote or local `twisterd` connection and updat
 ## Install
 
 > [!NOTE]
-> Stable snaps and pre-compiled binaries available on the [Releases page](https://github.com/twisterarmy/twisterad/releases)\
-> To install with `cargo`, follow [rustup instructions](https://rustup.rs/) to continue with the steps below
+> Stable snaps with pre-compiled binaries available on the [Releases page](https://github.com/twisterarmy/twisterad/releases)\
+> To install using `cargo`, follow [rustup instructions](https://rustup.rs/) to continue with the steps below
 
 ### Stable
 
