@@ -99,3 +99,4 @@ Apply changes:
 > and continue rotation from the previous memory state. It could be also useful for the desktop
 > users, who running their `twisterd` nodes periodically.
 >
+> * to apply new changes in the rotation `config.json`, run `systemctl restart twisterad`
