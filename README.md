@@ -90,6 +90,7 @@ Apply changes:
 * `systemctl enable` - start on system boot
 * `systemctl start twisterad` - launch
 * `systemctl status twisterad` - check service status
+* to apply any changes in the rotation `config.json`, run `systemctl restart twisterad`
 
 > [!NOTE]
 > After launch, `twisterad` listens for the `twisterd` connection to be established,
@@ -98,5 +99,3 @@ Apply changes:
 > When `twisterd` connection is lost, `twisterad` will wait for reconnection
 > and continue rotation from the previous memory state. It could be also useful for the desktop
 > users, who running their `twisterd` nodes periodically.
->
-> * to apply new changes in the rotation `config.json`, run `systemctl restart twisterad`
