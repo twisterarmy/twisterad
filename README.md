@@ -90,7 +90,7 @@ Apply changes:
 * `systemctl enable` - start on system boot
 * `systemctl start twisterad` - launch
 * `systemctl status twisterad` - check service status
-* to apply any changes in the rotation `config.json`, run `systemctl restart twisterad`
+* to apply any changes in the `config.json`, run `systemctl restart twisterad`
 
 > [!NOTE]
 > After launch, `twisterad` listens for the `twisterd` connection to be established,
