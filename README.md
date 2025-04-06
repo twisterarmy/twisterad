@@ -89,8 +89,13 @@ Apply changes:
 * `systemctl daemon-reload` - reload unit configuration
 * `systemctl enable` - start on system boot
 * `systemctl start twisterad` - launch
-  * `systemctl restart twisterad` - on change `config.json`
 * `systemctl status twisterad` - check service status
+
+On change `config.json`:
+
+``` bash
+systemctl restart twisterad
+```
 
 > [!NOTE]
 > After launch, `twisterad` listens for the `twisterd` connection to be established,
