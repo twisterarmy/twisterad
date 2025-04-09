@@ -10,6 +10,8 @@ Optimal to run as `systemd` unit that waits for `twisterd` connection and then b
 
 Check out `config.json` to setup remote or local `twisterd` connection and update default promotions asset!
 
+See also the [project Wiki](https://github.com/twisterarmy/twisterad/wiki) and [The twister P2P Book](https://twisterarmy.github.io/book/twisterad/) for more details!
+
 ## Install
 
 > [!NOTE]
