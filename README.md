@@ -64,7 +64,7 @@ To run `twisterad` as the `systemd` unit (background process):
 * `chmod 0700 /usr/bin/twisterad` - give required permissions
 * `chown twisterad:twisterad /usr/bin/twisterad` - allow user/group access
 * `mkdir /var/log/twisterad` - create destination for the logs
-* `cp config.conf /etc/twisterad.conf` - copy and customize default config
+* `cp config.json /etc/twisterad.conf` - copy and customize default config
 
 Create new `systemd` configuration file: `nano /etc/systemd/system/twisterad.service`
 
@@ -89,7 +89,7 @@ WantedBy=multi-user.target
 Apply changes:
 
 * `systemctl daemon-reload` - reload unit configuration
-* `systemctl enable` - start on system boot
+* `systemctl enable twisterad` - start on system boot
 * `systemctl start twisterad` - launch
 * `systemctl status twisterad` - check service status
 
