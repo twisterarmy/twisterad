@@ -31,6 +31,14 @@ cargo install twisterad
 * `cd twisterad`
 * `cargo run -- -c path/to/config.json`
 
+### Pre-compiled binary
+
+* `mkdir twisterad && cd twisterad`
+* `wget -qc https://github.com/twisterarmy/twisterad/releases/download/0.3.1/twisterad && chmod +x twisterad`
+* `wget -qc https://raw.githubusercontent.com/twisterarmy/twisterad/refs/heads/main/config.json`
+* `./twisterad --help`
+* `./twisterad --config ./config.json --user twisterhtmlUsername --password twisterhtmlPassword --jobs 1`
+
 ## CLI
 
 ``` bash
